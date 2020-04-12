@@ -10,7 +10,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("events")
-public class EventsController {
+public class EventController {
 
     @GetMapping
     public String displayAllEvents(Model model) {
@@ -23,5 +23,10 @@ public class EventsController {
         model.addAttribute("events", events);
 
         return "/events/index";
+    }
+
+    @GetMapping("create")
+    public String renderCreateEventForm(Model model) {
+        return "events/create";
     }
 }
