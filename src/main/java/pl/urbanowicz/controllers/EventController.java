@@ -18,14 +18,15 @@ public class EventController {
 
     @GetMapping
     public String displayAllEvents(Model model) {
+        model.addAttribute("title", "All Events");
         model.addAttribute("events", events);
 
         return "/events/index";
     }
 
     @GetMapping("create")
-    public String renderCreateEventForm() {
-
+    public String renderCreateEventForm(Model model) {
+        model.addAttribute("title", "Create Event");
         return "events/create";
     }
 
