@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.urbanowicz.data.EventData;
 import pl.urbanowicz.models.Event;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 @RequestMapping("events")
 public class EventController {
@@ -25,15 +22,35 @@ public class EventController {
     }
 
     @GetMapping("create")
-    public String renderCreateEventForm(Model model) {
+    public String displayCreateEventForm(Model model) {
         model.addAttribute("title", "Create Event");
         return "events/create";
     }
 
     @PostMapping("create")
-    public String createEvent(@RequestParam String eventName, @RequestParam String eventDescription) {
+    public String processCreateEventForm(@RequestParam String eventName, @RequestParam String eventDescription) {
         EventData.add(new Event(eventName, eventDescription));
 
         return "redirect:";
     }
+
+    @GetMapping("delete")
+    public String displayDeleteEventForm(Model model) {
+        model.addAttribute("title", "Delete Events");
+        model.addAttribute("events", EventData.getAll());
+
+        return "events/delete";
+    }
+
+    @PostMapping("delete")
+    public String processDeleteEventForm(@RequestParam(required = false) int[] eventsIds) {
+
+        if (eventsIds != null) {
+            for (int id : eventsIds) {
+                EventData.remove(id);
+            }
+        }
+        return "redirect:";
+    }
+
 }

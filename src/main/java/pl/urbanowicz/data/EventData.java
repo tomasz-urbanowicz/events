@@ -22,7 +22,7 @@ public class EventData {
         events.put(event.getId(), event);
     }
 
-    public void remove(int id) {
+    public static void remove(int id) {
         events.remove(id);
     }
 }
