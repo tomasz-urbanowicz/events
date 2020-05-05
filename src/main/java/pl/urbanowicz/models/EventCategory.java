@@ -2,11 +2,13 @@ package pl.urbanowicz.models;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "event_categories")
 public class EventCategory extends AbstractEntity {
 
     @Size(min = 3, message = "Name must be at least 3 characters long")

@@ -2,11 +2,13 @@ package pl.urbanowicz.models;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
+@Table(name = "event_details")
 public class EventDetails extends AbstractEntity{
 
     @Size(max = 500, message = "Description too long")

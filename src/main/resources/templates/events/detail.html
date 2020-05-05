@@ -5,18 +5,25 @@
 	<header th:replace="fragments::header"></header>
 	
 	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Description</th>
-				<th>Contact Email</th>
-			</tr>
-		</thead>
-		<tr th:each="event:${events}">
+		<tr>
+			<th>ID</th>
 			<td th:text="${event.id}"></td>
+		</tr>
+		<tr>
+			<th>Description</th>
 			<td th:text="${event.eventDetails.eventDescription}"></td>
+		</tr>
+		<tr>
+			<th>Contact Email</th>
 			<td th:text="${event.eventDetails.contactEmail}"></td>
 		</tr>
+		<tr>
+			<th>Tags</th>
+			<td>
+				<span th:each="tag : ${tags}" th:text="${tag.displayName} +' '"></span>
+			</td>
+		</tr>
 	</table>
+	<a th:href="'/events/add-tag?eventId=' + ${event.id}">Add Tag</a>
 </body>
 </html>

@@ -7,8 +7,11 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import pl.urbanowicz.data.EventCategoryRepository;
 import pl.urbanowicz.data.EventRepository;
+import pl.urbanowicz.data.TagRepository;
 import pl.urbanowicz.models.Event;
 import pl.urbanowicz.models.EventCategory;
+import pl.urbanowicz.models.Tag;
+import pl.urbanowicz.models.dto.EventTagDTO;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -21,10 +24,13 @@ public class EventController {
 
     private EventCategoryRepository eventCategoryRepository;
 
+    private TagRepository tagRepository;
+
     @Autowired
-    public EventController(EventRepository eventRepository, EventCategoryRepository eventCategoryRepository) {
+    public EventController(EventRepository eventRepository, EventCategoryRepository eventCategoryRepository, TagRepository tagRepository) {
         this.eventCategoryRepository = eventCategoryRepository;
         this.eventRepository = eventRepository;
+        this.tagRepository = tagRepository;
     }
 
 
@@ -96,9 +102,38 @@ public class EventController {
         } else {
             Event event = result.get();
             model.addAttribute("title", event.getEventName() + " Details");
-            model.addAttribute("events", event);
+            model.addAttribute("event", event);
+            model.addAttribute("tags", event.getTags());
         }
         return "events/detail";
     }
 
+    @GetMapping("add-tag")
+    public String displayAddTagForm(@RequestParam Integer eventId, Model model) {
+        Optional<Event> result = eventRepository.findById(eventId);
+        Event event = result.get();
+        model.addAttribute("title", "Add tag to: " + event.getEventName());
+        model.addAttribute("tags", tagRepository.findAll());
+        EventTagDTO eventTag = new EventTagDTO();
+        eventTag.setEvent(event);
+        model.addAttribute("eventTag", eventTag);
+
+        return "events/add-tag";
+    }
+
+
+    @PostMapping("add-tag")
+    public String processAddTagForm(@ModelAttribute @Valid EventTagDTO eventTag, Model model, Errors errors) {
+        if (!errors.hasErrors()) {
+            Event event = eventTag.getEvent();
+            Tag tag = eventTag.getTag();
+            if (!event.getTags().contains(tag)) {
+                event.addTag(tag);
+                eventRepository.save(event);
+            }
+            return "redirect:detail?eventId=" +event.getId() ;
+        }
+        return "redirect:add-tag";
+
+    }
 }
