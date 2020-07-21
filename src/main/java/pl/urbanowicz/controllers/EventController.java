@@ -37,7 +37,7 @@ public class EventController {
     @GetMapping
     public String displayAllEvents(@RequestParam(required = false) Integer categoryId, Model model) {
         if (categoryId == null) {
-            model.addAttribute("title", "All Events");
+             model.addAttribute("title", "All Events");
             model.addAttribute("events", eventRepository.findAll());
         } else {
             Optional<EventCategory> result = eventCategoryRepository.findById(categoryId);

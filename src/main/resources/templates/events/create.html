@@ -34,8 +34,9 @@
 							th:text="${eventCategory.name}">
 					</option>
 				</select>
-				<p class="error" th:errors="${event.eventCategory}"></p>
 			</label>
+			<p class="error" th:errors="${event.eventCategory}"></p>
+		
 		</div>
 		<div class="form-group">
 			<input type="submit" value="Create Event" class="btn btn-success">
